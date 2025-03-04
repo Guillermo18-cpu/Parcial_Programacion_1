@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Parcial {
 
     String titulo;
@@ -12,7 +14,7 @@ public class Parcial {
         this.num_ejem_pre = num_ejem_pre;
     }
 
-    
+
 
     public String gettitulo() {
         return titulo;
@@ -26,9 +28,11 @@ public class Parcial {
 
 
 
+
     public String getautor() {
         return autor;
     }
+
 
 
 
@@ -44,9 +48,13 @@ public class Parcial {
 
 
 
+
     public void setnum_ejemplares(int num_ejemplares) {
-        this.num_ejemplares = num_ejemplares;
+        if (num_ejemplares >= 0) {
+            this.num_ejemplares = num_ejemplares;
+        }
     }
+    
 
 
 
@@ -55,49 +63,68 @@ public class Parcial {
     }
 
 
-
     public void setnum_ejem_pre(int num_ejem_pre) {
-        this.num_ejem_pre = num_ejem_pre;
+        if (num_ejem_pre >= 0 && num_ejem_pre <= num_ejemplares) {
+            this.num_ejem_pre = num_ejem_pre;
+        }
     }
-
 
 
     public Parcial() { 
-
+        this.titulo = "";
+        this.autor = "";
+        this.num_ejemplares = 0;
+        this.num_ejem_pre = 0;
     }
 
-     void metodoPrestamo(){
-        if (num_ejemplares > 0 && num_ejem_pre < num_ejemplares){
-            num_ejemplares--;
+     public boolean metodoPrestamo(){
+        if (num_ejem_pre < num_ejemplares){
+            num_ejemplares++;
+            return true;
+        }
+        return false;
+
         }
 
-        System.out.println("El titulo del libro es: " +this.titulo+ "\nSu autor es: " + this.autor + "\nHay: "+this.num_ejemplares+ " disponibles y " + this.num_ejem_pre + " prestados");
+    public boolean metodoDevolucion(){
+        if (num_ejem_pre > 0){
+            num_ejemplares--; 
+            return true;
+        }
+        return false;
     }
 
-    void metodoDevolucion(){
-        if (num_ejemplares < num_ejem_pre){
-            num_ejemplares++; 
-        }
-        System.out.println("");
+    public String toString() {
+        return "Libro" + "Titulo='" + titulo + '\'' + ", Autor='" + autor + '\'' + ", Ejemplares=" + num_ejemplares + ", Prestados=" + num_ejem_pre ;
     }
 
     public static void main(String[] args) {
 
         Parcial libro1 = new Parcial ( "Programacion en java", "Guillermo Sanchez", 10,5 ); 
         
-        libro1.metodoPrestamo();
-        System.out.println("");
 
-        libro1.metodoDevolucion();
+        Scanner scanner = new Scanner (System.in);
+
 
         Parcial libro2 = new Parcial ();
 
-        libro2.metodoPrestamo();
-        System.out.println("");
+        System.out.print("Ingrese el título del libro: ");
+        libro2.settitulo(scanner.nextLine());
+        
+        System.out.print("Ingrese el autor del libro: ");
+        libro2.setautor(scanner.nextLine());
+        
+        System.out.print("Ingrese el número de ejemplares: ");
+        libro2.setnum_ejemplares(scanner.nextInt());
+        
+        System.out.print("Ingrese el número de ejemplares prestados: ");
+        libro2.setnum_ejem_pre(scanner.nextInt());
+        
+        System.out.println("Libro 2: " + libro2);
+        scanner.close();
 
-        libro2.metodoDevolucion();
-        System.out.println("");
 
+        System.out.println("Prestamo del libro: " +libro1.metodoPrestamo());
+        System.out.println("Devolucion del libro: " +libro1.metodoDevolucion());
     }
-
 }
